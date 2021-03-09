@@ -38,5 +38,36 @@ public class RoadManager {
         for (RoadObject roadObject : items) {
             roadObject.move(boost + roadObject.speed);
         }
+        deletePassedItems();
+    }
+
+    private boolean isThornExists() {
+        boolean result = false;
+        for (RoadObject roadObject : items) {
+            if (roadObject.type == RoadObjectType.THORN) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    private void generateThorn(Game game) {
+        if (game.getRandomNumber(100) < 10 && !isThornExists()) {
+            addRoadObject(RoadObjectType.THORN, game);
+        }
+    }
+
+    public void generateNewRoadObjects(Game game) {
+        generateThorn(game);
+    }
+
+    private void deletePassedItems() {
+        List<RoadObject> itemsCopy = new ArrayList<>();
+        itemsCopy.addAll(items);
+        for (RoadObject roadObject : itemsCopy) {
+            if (roadObject.y >= RacerGame.HEIGHT) {
+                items.remove(roadObject);
+            }
+        }
     }
 }

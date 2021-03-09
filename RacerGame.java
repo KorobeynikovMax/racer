@@ -46,6 +46,7 @@ public class RacerGame extends Game {
     @Override
     public void onTurn(int step) {
         moveAll();
+        roadManager.generateNewRoadObjects(this);
         drawScene();
     }
 
@@ -85,6 +86,7 @@ public class RacerGame extends Game {
 
     private void moveAll() {
         roadMarking.move(player.speed);
+        roadManager.move(player.speed);
         player.move();
     }
 }
