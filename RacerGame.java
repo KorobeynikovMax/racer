@@ -56,6 +56,8 @@ public class RacerGame extends Game {
     public void onTurn(int step) {
         if (roadManager.checkCrush(player)) {
             gameOver();
+        } else if (finishLine.isCrossed(player)) {
+            win();
         } else {
             if (roadManager.getPassedCarsCount() >= RACE_GOAL_CARS_COUNT) {
                 finishLine.show();
@@ -122,5 +124,12 @@ public class RacerGame extends Game {
         stopTurnTimer();
         player.stop();
         showMessageDialog(Color.GRAY, "Game Over!", Color.ROSYBROWN, 40);
+    }
+
+    private void win() {
+        isGameStopped = true;
+        showMessageDialog(Color.GRAY, "You are the WINNER!!!",
+                Color.YELLOWGREEN, 45);
+        stopTurnTimer();
     }
 }
