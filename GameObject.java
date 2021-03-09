@@ -18,6 +18,11 @@ public class GameObject {
         this.matrix = matrix;
     }
 
+    public GameObject(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public void draw(Game game) {
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[i].length; j++) {
