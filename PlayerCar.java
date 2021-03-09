@@ -34,6 +34,9 @@ public class PlayerCar extends GameObject{
         } else if (x > RoadManager.RIGHT_BORDER - width) {
             x = RoadManager.RIGHT_BORDER - width;
         }
+    }
 
+    public void stop() {
+        this.matrix = ShapeMatrix.PLAYER_DEAD;
     }
 }

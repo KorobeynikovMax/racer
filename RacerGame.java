@@ -13,6 +13,7 @@ public class RacerGame extends Game {
     private RoadMarking roadMarking;
     private PlayerCar player;
     private RoadManager roadManager;
+    private boolean isGameStopped;
 
     @Override
     public void initialize() {
@@ -22,6 +23,7 @@ public class RacerGame extends Game {
     }
 
     private void createGame() {
+        isGameStopped = false;
         roadMarking = new RoadMarking();
         player = new PlayerCar();
         roadManager = new RoadManager();
@@ -45,18 +47,28 @@ public class RacerGame extends Game {
 
     @Override
     public void onTurn(int step) {
-        moveAll();
-        roadManager.generateNewRoadObjects(this);
+        if (roadManager.checkCrush(player)) {
+            gameOver();
+        } else {
+            moveAll();
+            roadManager.generateNewRoadObjects(this);
+        }
         drawScene();
     }
 
     @Override
     public void onKeyPress(Key key) {
-        if (key.RIGHT.equals(key)) {
+        if (Key.RIGHT.equals(key)) {
             player.setDirection(Direction.RIGHT);
         }
-        if (key.LEFT.equals(key)) {
+        if (Key.LEFT.equals(key)) {
             player.setDirection(Direction.LEFT);
+        }
+        if (Key.SPACE.equals(key) && isGameStopped) {
+            createGame();
+        }
+        if (Key.UP.equals(key)) {
+            player.speed = 2;
         }
     }
 
@@ -67,6 +79,9 @@ public class RacerGame extends Game {
         }
         if (Key.RIGHT.equals(key) && Direction.RIGHT.equals(player.getDirection())) {
             player.setDirection(Direction.NONE);
+        }
+        if (Key.UP.equals(key)) {
+            player.speed = 1;
         }
     }
 
@@ -88,5 +103,12 @@ public class RacerGame extends Game {
         roadMarking.move(player.speed);
         roadManager.move(player.speed);
         player.move();
+    }
+
+    private void gameOver() {
+        isGameStopped = true;
+        stopTurnTimer();
+        player.stop();
+        showMessageDialog(Color.GRAY, "Game Over!", Color.ROSYBROWN, 40);
     }
 }
